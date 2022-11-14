@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "277590744756",
+    "project_id": "prime-pod-325520",
+    "storage_bucket": "prime-pod-325520.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:277590744756:android:d613cf15653d07bc3181e1",
+        "android_client_info": {
+          "package_name": "com.mycompany.gatorroundup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "277590744756-li72fn4hdak70c28469kmd7iou20i7fb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mycompany.gatorroundup",
+            "certificate_hash": "9bbb3186b2189ef16d8f272bdab59362c395cbb4"
+          }
+        },
+        {
+          "client_id": "277590744756-b9b0kpjvq2r06e5bd2b5v2uk9p1oult0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBigQrkGWRHkw4IFeGCeJBT_IlPJuBDT1s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "277590744756-b9b0kpjvq2r06e5bd2b5v2uk9p1oult0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "277590744756-np5do941e9g33c4777sbhsldlu20ngmt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mycompany.gatorroundup"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
