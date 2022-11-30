@@ -1,3 +1,6 @@
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
@@ -10,6 +13,18 @@ class HomeWidget extends StatefulWidget {
 
   @override
   _HomeWidgetState createState() => _HomeWidgetState();
+}
+
+Future<void> scanQR() async {
+  String barcodeScanRes;
+  // Platform messages may fail, so we use a try/catch PlatformException.
+  try {
+    barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666', 'Cancel', true, ScanMode.QR);
+    print(barcodeScanRes);
+  } on PlatformException {
+    barcodeScanRes = 'Failed to get platform version.';
+  }
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
@@ -84,7 +99,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 children: [
                   FFButtonWidget(
                     onPressed: () async {
-                      context.pushNamed('QRCode');
+                      scanQR();
                     },
                     text: 'QR Code',
                     options: FFButtonOptions(
