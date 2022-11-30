@@ -11,6 +11,13 @@ class QRCodeScanWidget extends StatefulWidget {
   _QRCodeScanWidgetState createState() => _QRCodeScanWidgetState();
 }
 
+/* Get a drop down or eventlist working then when an individual is selected it 
+1. opens qr code scanner
+2. once scanned grab the data and send to the selected event into the users list
+if not scanned do nothing
+
+*/
+
 class _QRCodeScanWidgetState extends State<QRCodeScanWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
