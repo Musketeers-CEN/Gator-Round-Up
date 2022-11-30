@@ -1,6 +1,6 @@
 {
-    "name": "Gator Round Up",
-    "short_name": "Gator Round Up",
+    "name": "GatorRoundUp",
+    "short_name": "GatorRoundUp",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

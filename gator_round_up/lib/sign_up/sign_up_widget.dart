@@ -16,27 +16,33 @@ class SignUpWidget extends StatefulWidget {
 }
 
 class _SignUpWidgetState extends State<SignUpWidget> {
+  TextEditingController? confirmPasswordTextController;
+
+  late bool passwordVisibility2;
   TextEditingController? emailTextController;
   TextEditingController? passwordTextController;
 
-  late bool passwordVisibility;
-  TextEditingController? textController;
+  late bool passwordVisibility1;
+  TextEditingController? textController2;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
+    confirmPasswordTextController = TextEditingController();
+    passwordVisibility2 = false;
     emailTextController = TextEditingController();
     passwordTextController = TextEditingController();
-    passwordVisibility = false;
-    textController = TextEditingController(text: '(Admin Password)');
+    passwordVisibility1 = false;
+    textController2 = TextEditingController(text: '(Admin Password)');
   }
 
   @override
   void dispose() {
+    confirmPasswordTextController?.dispose();
     emailTextController?.dispose();
     passwordTextController?.dispose();
-    textController?.dispose();
+    textController2?.dispose();
     super.dispose();
   }
 
@@ -66,6 +72,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 padding: EdgeInsetsDirectional.fromSTEB(0, 44, 0, 0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     InkWell(
                       onTap: () async {
@@ -213,7 +220,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                     padding: EdgeInsetsDirectional.fromSTEB(2, 2, 2, 2),
                     child: TextFormField(
                       controller: passwordTextController,
-                      obscureText: !passwordVisibility,
+                      obscureText: !passwordVisibility1,
                       decoration: InputDecoration(
                         labelText: 'Password',
                         labelStyle: FlutterFlowTheme.of(context).bodyText2,
@@ -253,11 +260,87 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
                         suffixIcon: InkWell(
                           onTap: () => setState(
-                            () => passwordVisibility = !passwordVisibility,
+                            () => passwordVisibility1 = !passwordVisibility1,
                           ),
                           focusNode: FocusNode(skipTraversal: true),
                           child: Icon(
-                            passwordVisibility
+                            passwordVisibility1
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                            color: FlutterFlowTheme.of(context).secondaryText,
+                            size: 22,
+                          ),
+                        ),
+                      ),
+                      style: FlutterFlowTheme.of(context).bodyText1,
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                    boxShadow: [
+                      BoxShadow(
+                        blurRadius: 6,
+                        color: Color(0x3416202A),
+                        offset: Offset(0, 2),
+                      )
+                    ],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(2, 2, 2, 2),
+                    child: TextFormField(
+                      controller: confirmPasswordTextController,
+                      obscureText: !passwordVisibility2,
+                      decoration: InputDecoration(
+                        labelText: 'Confirm Password',
+                        labelStyle: FlutterFlowTheme.of(context).bodyText2,
+                        hintStyle: FlutterFlowTheme.of(context).bodyText2,
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0x00000000),
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0x00000000),
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0x00000000),
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0x00000000),
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        filled: true,
+                        fillColor:
+                            FlutterFlowTheme.of(context).secondaryBackground,
+                        contentPadding:
+                            EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
+                        suffixIcon: InkWell(
+                          onTap: () => setState(
+                            () => passwordVisibility2 = !passwordVisibility2,
+                          ),
+                          focusNode: FocusNode(skipTraversal: true),
+                          child: Icon(
+                            passwordVisibility2
                                 ? Icons.visibility_outlined
                                 : Icons.visibility_off_outlined,
                             color: FlutterFlowTheme.of(context).secondaryText,
@@ -278,7 +361,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   children: [
                     Expanded(
                       child: TextFormField(
-                        controller: textController,
+                        controller: textController2,
                         autofocus: true,
                         obscureText: false,
                         decoration: InputDecoration(
@@ -335,6 +418,17 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                     FFButtonWidget(
                       onPressed: () async {
                         GoRouter.of(context).prepareAuthEvent();
+                        if (passwordTextController?.text !=
+                            confirmPasswordTextController?.text) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Passwords don\'t match!',
+                              ),
+                            ),
+                          );
+                          return;
+                        }
 
                         final user = await createAccountWithEmail(
                           context,
@@ -347,13 +441,13 @@ class _SignUpWidgetState extends State<SignUpWidget> {
 
                         final usersCreateData = createUsersRecordData(
                           admin:
-                              textController!.text == 'DanceMarathonExec2022',
+                              textController2!.text == 'DanceMarathonExec2022',
                         );
                         await UsersRecord.collection
                             .doc(user.uid)
                             .update(usersCreateData);
 
-                        if (textController!.text == 'DanceMarathonExec2022') {
+                        if (textController2!.text == 'DanceMarathonExec2022') {
                           return;
                         }
 

@@ -5,7 +5,7 @@
 
 
    <application
-        android:label="Gator Round Up"
+        android:label="GatorRoundUp"
         tools:replace="android:label"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true">

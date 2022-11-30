@@ -13,14 +13,36 @@ abstract class EventsRecord
   @BuiltValueField(wireName: 'EventTitle')
   String? get eventTitle;
 
-  @BuiltValueField(wireName: 'EventDate')
-  DateTime? get eventDate;
-
   @BuiltValueField(wireName: 'Users')
   BuiltList<DocumentReference>? get users;
 
   @BuiltValueField(wireName: 'EventSummary')
   String? get eventSummary;
+
+  String? get email;
+
+  @BuiltValueField(wireName: 'display_name')
+  String? get displayName;
+
+  @BuiltValueField(wireName: 'photo_url')
+  String? get photoUrl;
+
+  String? get uid;
+
+  @BuiltValueField(wireName: 'created_time')
+  DateTime? get createdTime;
+
+  @BuiltValueField(wireName: 'phone_number')
+  String? get phoneNumber;
+
+  @BuiltValueField(wireName: 'StartTime')
+  DateTime? get startTime;
+
+  @BuiltValueField(wireName: 'EndTime')
+  DateTime? get endTime;
+
+  @BuiltValueField(wireName: 'EventDate')
+  DateTime? get eventDate;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
@@ -29,7 +51,12 @@ abstract class EventsRecord
   static void _initializeBuilder(EventsRecordBuilder builder) => builder
     ..eventTitle = ''
     ..users = ListBuilder()
-    ..eventSummary = '';
+    ..eventSummary = ''
+    ..email = ''
+    ..displayName = ''
+    ..photoUrl = ''
+    ..uid = ''
+    ..phoneNumber = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('Events');
@@ -54,17 +81,33 @@ abstract class EventsRecord
 
 Map<String, dynamic> createEventsRecordData({
   String? eventTitle,
-  DateTime? eventDate,
   String? eventSummary,
+  String? email,
+  String? displayName,
+  String? photoUrl,
+  String? uid,
+  DateTime? createdTime,
+  String? phoneNumber,
+  DateTime? startTime,
+  DateTime? endTime,
+  DateTime? eventDate,
 }) {
   final firestoreData = serializers.toFirestore(
     EventsRecord.serializer,
     EventsRecord(
       (e) => e
         ..eventTitle = eventTitle
-        ..eventDate = eventDate
         ..users = null
-        ..eventSummary = eventSummary,
+        ..eventSummary = eventSummary
+        ..email = email
+        ..displayName = displayName
+        ..photoUrl = photoUrl
+        ..uid = uid
+        ..createdTime = createdTime
+        ..phoneNumber = phoneNumber
+        ..startTime = startTime
+        ..endTime = endTime
+        ..eventDate = eventDate,
     ),
   );
 

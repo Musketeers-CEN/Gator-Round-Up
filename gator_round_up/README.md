@@ -1,4 +1,4 @@
-# Gator Round Up
+# GatorRoundUp
 
 A new Flutter project.
 

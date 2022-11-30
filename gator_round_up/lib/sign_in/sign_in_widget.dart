@@ -67,6 +67,7 @@ class _SignInWidgetState extends State<SignInWidget> {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 44, 0, 0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Container(
                         height: 50,
