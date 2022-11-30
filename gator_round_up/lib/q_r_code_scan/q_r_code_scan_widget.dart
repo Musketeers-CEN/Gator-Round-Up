@@ -1,5 +1,8 @@
+import 'package:gator_round_up/index.dart';
+
 import '../flutter_flow/flutter_flow_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class QRCodeScanWidget extends StatefulWidget {
   const QRCodeScanWidget({Key? key}) : super(key: key);
@@ -38,25 +41,7 @@ class _QRCodeScanWidgetState extends State<QRCodeScanWidget> {
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  color: Color(0xFF0F0D0D),
-                ),
-                child: SelectionArea(
-                    child: Text(
-                  'USer Camera Placeholder',
-                  textAlign: TextAlign.center,
-                  style: FlutterFlowTheme.of(context).bodyText1.override(
-                        fontFamily: 'Metropolis',
-                        color: Colors.white,
-                        useGoogleFonts: false,
-                      ),
-                )),
-              ),
-            ],
+            children: [QRCodeScanWidget()],
           ),
         ),
       ),
