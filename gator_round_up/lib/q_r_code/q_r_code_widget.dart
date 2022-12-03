@@ -117,6 +117,8 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
                               listViewEventsRecordList[listViewIndex];
                           return InkWell(
                             onTap: () async {
+                              /*To do: generate qr code based on user ID */
+
                               FirebaseFirestore.instance
                                   .collection('Events')
                                   .doc(listViewEventsRecordList[listViewIndex]
@@ -125,7 +127,7 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
                                   .then((DocumentSnapshot documentSnapshot) {
                                 if (documentSnapshot.exists) {
                                   QrImage(
-                                    data: 'This is a simple QR code',
+                                    data: documentSnapshot.id,
                                     version: QrVersions.auto,
                                     size: 320,
                                     gapless: false,
