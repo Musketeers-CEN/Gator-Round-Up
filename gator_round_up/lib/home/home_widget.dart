@@ -99,7 +99,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 children: [
                   FFButtonWidget(
                     onPressed: () async {
-                      scanQR();
+                      context.pushNamed('qRCode');
                     },
                     text: 'QR Code',
                     options: FFButtonOptions(

@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -43,21 +45,29 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
-                width: 100,
-                height: 100,
+                height: 300,
                 decoration: BoxDecoration(
                   color: Color(0xFF0F0D0D),
                 ),
-                child: SelectionArea(
-                    child: Text(
-                  'User QR Code Placeholder',
-                  textAlign: TextAlign.center,
-                  style: FlutterFlowTheme.of(context).bodyText1.override(
-                        fontFamily: 'Metropolis',
-                        color: Colors.white,
-                        useGoogleFonts: false,
-                      ),
-                )),
+                child: Center(
+                  child: QrImage(
+                    data: FirebaseAuth.instance.currentUser!.uid,
+                    version: QrVersions.auto,
+                    gapless: true,
+                    foregroundColor: Colors.white,
+                    errorStateBuilder: (cxt, err) {
+                      return Container(
+                        child: Center(
+                          child: Text(
+                            "Uh oh! Something went wrong...",
+                            textAlign: TextAlign.center,
+                            selectionColor: Colors.white,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
               Column(
                 //Event List
