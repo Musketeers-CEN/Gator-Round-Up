@@ -101,6 +101,16 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
               name: 'CreateEvent',
               path: 'createEvent',
               builder: (context, params) => CreateEventWidget(),
+            ),
+            FFRoute(
+              name: 'ManageEvents',
+              path: 'ManageEvents',
+              builder: (context, params) => ManageEventsWidget(),
+            ),
+            FFRoute(
+              name: 'ManageEvent',
+              path: 'ManageEvent/:eventId',
+              builder: (context, params) => ManageEventWidget(),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),
