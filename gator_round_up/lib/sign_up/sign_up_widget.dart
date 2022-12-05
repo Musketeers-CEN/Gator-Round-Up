@@ -33,7 +33,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
     emailTextController = TextEditingController();
     passwordTextController = TextEditingController();
     passwordVisibility1 = false;
-    textController2 = TextEditingController(text: '(Admin Password)');
+    textController2 = TextEditingController();
   }
 
   @override
@@ -365,6 +365,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                         obscureText: false,
                         decoration: InputDecoration(
                           labelText: 'Not Required',
+                          hintText: 'Admin Password',
                           hintStyle: FlutterFlowTheme.of(context).bodyText2,
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(

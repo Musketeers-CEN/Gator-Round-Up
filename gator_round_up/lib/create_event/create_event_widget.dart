@@ -21,11 +21,15 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  String eventDateText = "Event Date";
+  String startTimeText = "Start Time";
+  String endTimeText = "End Time";
+
   @override
   void initState() {
     super.initState();
     eventNameFieldController = TextEditingController();
-    shortBioFieldController = TextEditingController();
+    shortBioFieldController = TextEditingController();  
   }
 
   @override
@@ -190,12 +194,13 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                                 showTitleActions: true,
                                 onConfirm: (date) {
                                   setState(() => datePicked1 = date);
+                                  eventDateText = date.month.toString() + "/" + date.day.toString() + "/" + date.year.toString();
                                 },
                                 currentTime: getCurrentTimestamp,
                                 minTime: getCurrentTimestamp,
                               );
                             },
-                            text: 'Event Date',
+                            text: eventDateText,
                             options: FFButtonOptions(
                               width: 130,
                               height: 40,
@@ -234,11 +239,12 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                                 showTitleActions: true,
                                 onConfirm: (date) {
                                   setState(() => datePicked2 = date);
+                                  startTimeText = date.hour.toString() + ":" + date.minute.toString();  
                                 },
                                 currentTime: getCurrentTimestamp,
                               );
                             },
-                            text: 'Start Time',
+                            text: startTimeText,
                             options: FFButtonOptions(
                               width: 130,
                               height: 40,
@@ -271,11 +277,12 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                                 showTitleActions: true,
                                 onConfirm: (date) {
                                   setState(() => datePicked3 = date);
+                                  endTimeText = date.hour.toString() + ":" + date.minute.toString();
                                 },
                                 currentTime: getCurrentTimestamp,
                               );
                             },
-                            text: 'End Time',
+                            text: endTimeText,
                             options: FFButtonOptions(
                               width: 130,
                               height: 40,
@@ -321,6 +328,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                         eventDate: datePicked1,
                       );
                       await EventsRecord.collection.doc().set(eventsCreateData);
+                      context.pushNamed('home');
                     },
                     text: 'Create Event',
                     options: FFButtonOptions(
