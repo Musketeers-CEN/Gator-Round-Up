@@ -29,6 +29,12 @@ class _QRCodeScanWidgetState extends State<QRCodeScanWidget> {
         appBar: AppBar(
           backgroundColor: FlutterFlowTheme.of(context).primaryColor,
           title: const Text('Mobile Scanner'),
+          titleTextStyle: FlutterFlowTheme.of(context).title2.override(
+            fontFamily: 'Metropolis',
+            color: Colors.white,
+            fontSize: 22,
+            useGoogleFonts: false,
+          ),
           actions: [
             IconButton(
               color: Colors.white,
@@ -63,6 +69,8 @@ class _QRCodeScanWidgetState extends State<QRCodeScanWidget> {
               onPressed: () => cameraController.switchCamera(),
             ),
           ],
+          centerTitle: true,
+          elevation: 2,
         ),
         body: SafeArea(
           child: MobileScanner(
