@@ -78,48 +78,4 @@ class _QRCodeScanWidgetState extends State<QRCodeScanWidget> {
             }))            
           );         
   }
-/*
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).primaryColor,
-        automaticallyImplyLeading: true,
-        title: Text(
-          'QR Code of User',
-          style: FlutterFlowTheme.of(context).title2.override(
-                fontFamily: 'Metropolis',
-                color: Colors.white,
-                fontSize: 22,
-                useGoogleFonts: false,
-              ),
-        ),
-        actions: [],
-        centerTitle: true,
-        elevation: 2,
-      ),
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: MobileScanner(
-            allowDuplicates: false,
-            controller: cameraController,
-            onDetect: (barcode, args) {
-              if (barcode.rawValue == null) {
-                debugPrint('Failed to scan Barcode');
-              } else {
-                final String code = barcode.rawValue!;
-                debugPrint('Barcode found! $code');
-              }
-            }); 
-          ),
-        ),
-      ),
-    );
-  }*/
 }
