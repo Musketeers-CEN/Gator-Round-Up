@@ -154,6 +154,31 @@ class _HomeWidgetState extends State<HomeWidget> {
                     AuthUserStreamWidget(
                       child: FFButtonWidget(
                         onPressed: () async {
+                          context.pushNamed('ManageEvents');
+                        },
+                        text: 'Manage Events',
+                        options: FFButtonOptions(
+                          width: 140,
+                          height: 80,
+                          color: FlutterFlowTheme.of(context).primaryColor,
+                          textStyle:
+                              FlutterFlowTheme.of(context).subtitle2.override(
+                                    fontFamily: 'Metropolis',
+                                    color: Colors.white,
+                                    useGoogleFonts: false,
+                                  ),
+                          borderSide: BorderSide(
+                            color: Colors.transparent,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  if (valueOrDefault<bool>(currentUserDocument?.admin, false))
+                    AuthUserStreamWidget(
+                      child: FFButtonWidget(
+                        onPressed: () async {
                           context.pushNamed('CreateEvent');
                         },
                         text: 'Create Event',
@@ -175,6 +200,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                         ),
                       ),
                     ),
+                  
                 ],
               ),
               Column(
@@ -184,11 +210,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SelectionArea(
+                      Padding(
+                        padding: EdgeInsets.all(15),
+                        child: SelectionArea(
                           child: Text(
                         'Upcoming Events',
                         style: FlutterFlowTheme.of(context).bodyText1,
-                      )),
+                      ))),
                     ],
                   ),
                   StreamBuilder<List<EventsRecord>>(

@@ -1,19 +1,35 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:html';
 
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+
+import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:qr_flutter/qr_flutter.dart';
 
-class QRCodeWidget extends StatefulWidget {
-  const QRCodeWidget({Key? key}) : super(key: key);
+class ManageEventsWidget extends StatefulWidget {
+  const ManageEventsWidget({Key? key}) : super(key: key);
 
   @override
-  _QRCodeWidgetState createState() => _QRCodeWidgetState();
+  _ManageEventsState createState() => _ManageEventsState();
 }
 
-class _QRCodeWidgetState extends State<QRCodeWidget> {
+Future<void> scanQR() async {
+  String barcodeScanRes;
+  // Platform messages may fail, so we use a try/catch PlatformException.
+  try {
+    barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666', 'Cancel', true, ScanMode.QR);
+    print(barcodeScanRes);
+  } on PlatformException {
+    barcodeScanRes = 'Failed to get platform version.';
+  }
+}
+
+class _ManageEventsState extends State<ManageEventsWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -25,7 +41,7 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         automaticallyImplyLeading: true,
         title: Text(
-          'QR Code of User',
+          'Manage Events',
           style: FlutterFlowTheme.of(context).title2.override(
                 fontFamily: 'Metropolis',
                 color: Colors.white,
@@ -44,53 +60,13 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
-                height: 300,
-                decoration: BoxDecoration(
-                  color: Color(0xFF0F0D0D),
-                ),
-                child: Center(
-                  child: QrImage(
-                    data: FirebaseAuth.instance.currentUser!.uid,
-                    version: QrVersions.auto,
-                    gapless: true,
-                    foregroundColor: Colors.white,
-                    errorStateBuilder: (cxt, err) {
-                      return Container(
-                        child: Center(
-                          child: Text(
-                            "Uh oh! Something went wrong...",
-                            textAlign: TextAlign.center,
-                            selectionColor: Colors.white,
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
               Column(
                 //Event List
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.all(15),
-                        child: SelectionArea(
-                          child: Text(
-                        'Upcoming Events',
-                        style: FlutterFlowTheme.of(context).bodyText1,
-                      ))),
-                    ],
-                  ),
                   StreamBuilder<List<EventsRecord>>(
                     stream: queryEventsRecord(
                       queryBuilder: (eventsRecord) => eventsRecord
-                          .where('StartTime',
-                              isGreaterThanOrEqualTo: getCurrentTimestamp)
                           .orderBy('StartTime'),
                       limit: 20,
                     ),
@@ -120,24 +96,19 @@ class _QRCodeWidgetState extends State<QRCodeWidget> {
                           return InkWell(
                             onTap: () async {
                               /*To do: generate qr code based on user ID */
+                              context.pushNamed('ManageEvent', params: {"eventId": listViewEventsRecord.eventTitle!});
 
-                              FirebaseFirestore.instance
+                              /*FirebaseFirestore.instance
                                   .collection('Events')
                                   .doc(listViewEventsRecordList[listViewIndex]
                                       .uid)
                                   .get()
                                   .then((DocumentSnapshot documentSnapshot) {
                                 if (documentSnapshot.exists) {
-                                  QrImage(
-                                    data: documentSnapshot.id,
-                                    version: QrVersions.auto,
-                                    size: 320,
-                                    gapless: false,
-                                  );
                                 } else {
                                   throw ('Document does not exist on the database');
                                 }
-                              });
+                              });*/
                             },
                             child: ListTile(
                               title: Text(

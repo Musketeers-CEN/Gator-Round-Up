@@ -318,13 +318,16 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                         return;
                       }
 
+                      datePicked2 = DateTime(datePicked1!.year, datePicked1!.month, datePicked1!.day, datePicked2!.hour, datePicked2!.minute, 0);
+                      datePicked3 = DateTime(datePicked1!.year, datePicked1!.month, datePicked1!.day, datePicked3!.hour, datePicked3!.minute, 0);
+
                       final eventsCreateData = createEventsRecordData(
                         eventTitle: eventNameFieldController!.text,
                         eventSummary: shortBioFieldController!.text,
                         createdTime: getCurrentTimestamp,
                         displayName: eventNameFieldController!.text,
                         startTime: datePicked2,
-                        endTime: datePicked2,
+                        endTime: datePicked3,
                         eventDate: datePicked1,
                       );
                       await EventsRecord.collection.doc().set(eventsCreateData);
