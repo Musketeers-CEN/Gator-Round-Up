@@ -34,6 +34,39 @@ class _ManageEventState extends State<ManageEventWidget> {
 
   @override
   Widget build(BuildContext context) {
+    String docID = ModalRoute.of(context).settings.arguments.toString();
+
+    List<DocumentReference> group = [];
+
+    Future<DocumentReference<Map<String, dynamic>>> document = FirebaseFirestore
+        .instance
+        .collection('Events')
+        .doc(docID)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        group = documentSnapshot.get("Users");
+      } else {
+        throw ('Document does not exist on the database');
+      }
+      throw ('Document does not exist on the database');
+    });
+    List<String> userNames = [];
+    group.forEach(
+      (element) {
+        String name = '';
+        FirebaseFirestore.instance
+            .collection("Users")
+            .doc(element.path)
+            .get()
+            .then((DocumentSnapshot documentSnapshot) {
+          name = documentSnapshot.get('displayname');
+        });
+
+        userNames.add(name);
+      },
+    );
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -64,84 +97,19 @@ class _ManageEventState extends State<ManageEventWidget> {
                 //Event List
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Text("Event Title:")
-                  /*StreamBuilder<List<EventsRecord>>(
-                    stream: queryEventsRecord(
-                      queryBuilder: (eventsRecord) => eventsRecord
-                          .orderBy('StartTime'),
-                      limit: 20,
-                    ),
-                    builder: (context, snapshot) {
-                      // Customize what your widget looks like when it's loading.
-                      if (!snapshot.hasData) {
-                        return Center(
-                          child: SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                              color: FlutterFlowTheme.of(context).primaryColor,
-                            ),
-                          ),
-                        );
-                      }
-                      List<EventsRecord> listViewEventsRecordList =
-                          snapshot.data!;
-                      return ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: listViewEventsRecordList.length,
-                        itemBuilder: (context, listViewIndex) {
-                          final listViewEventsRecord =
-                              listViewEventsRecordList[listViewIndex];
-                          return InkWell(
-                            onTap: () async {
-                              /*To do: generate qr code based on user ID */
-                              context.pushNamed('ManageEvents', queryParams: {"eventId": "codemagic"});
-
-                              /*FirebaseFirestore.instance
-                                  .collection('Events')
-                                  .doc(listViewEventsRecordList[listViewIndex]
-                                      .uid)
-                                  .get()
-                                  .then((DocumentSnapshot documentSnapshot) {
-                                if (documentSnapshot.exists) {
-                                } else {
-                                  throw ('Document does not exist on the database');
-                                }
-                              });*/
-                            },
-                            child: ListTile(
-                              title: Text(
-                                listViewEventsRecord.eventTitle!,
-                                style: FlutterFlowTheme.of(context)
-                                    .title1
-                                    .override(
-                                      fontFamily: 'Metropolis',
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryColor,
-                                      useGoogleFonts: false,
-                                    ),
-                              ),
-                              subtitle: Text(
-                                '${dateTimeFormat('jm', listViewEventsRecord.startTime)} ${dateTimeFormat('MMMEd', listViewEventsRecord.eventDate)}',
-                                style: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: 'Metropolis',
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryColor,
-                                      useGoogleFonts: false,
-                                    ),
-                              ),
-                              tileColor: Color(0xFFF5F5F5),
-                              dense: false,
-                            ),
-                          );
-                        },
+                  Text("Event Title:"),
+                  ListView.separated(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: userNames.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        height: 50,
+                        child: Center(child: Text('Entry ${userNames[index]}')),
                       );
                     },
-                  ),*/
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(),
+                  ),
                 ],
               ),
             ],
