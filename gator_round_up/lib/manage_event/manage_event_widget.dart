@@ -10,38 +10,34 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 
-
 String eventTitle = "Loading...";
-
-
 
 class ManageEventWidget extends StatelessWidget {
   final String eventId;
   ManageEventWidget({Key? key, required this.eventId}) : super(key: key);
-  
 
-  final scaffoldKey = GlobalKey<ScaffoldState>(); 
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     List<dynamic> group = [];
 
-    Future<DocumentSnapshot>? asyncFunction(){
+    Future<DocumentSnapshot>? asyncFunction() {
       print("HERE2");
-      
-      if(eventId == ""){
+
+      if (eventId == "") {
         return null;
       }
 
       Future<DocumentSnapshot> document = FirebaseFirestore.instance
-            .doc(eventId)
-            .get()
-            .then((DocumentSnapshot documentSnapshot) {
-          if (documentSnapshot.exists) {
-            return documentSnapshot;
-          } else {
-            throw ('Document does not exist on the database');
-          }
-        });
+          .doc(eventId)
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          return documentSnapshot;
+        } else {
+          throw ('Document does not exist on the database');
+        }
+      });
       return document;
     }
 
@@ -61,61 +57,43 @@ class ManageEventWidget extends StatelessWidget {
       }
     });*/
 
-    List<String> userNames = [];
-    group.forEach(
-      (element) {
-        String name = '';
-        FirebaseFirestore.instance
-            .collection("users")
-            .doc(element.path)
-            .get()
-            .then((DocumentSnapshot documentSnapshot) {
-          name = documentSnapshot.get('displayname');
-        });
-
-        userNames.add(name);
-      },
-    );
-
-    print(userNames);
-
     return FutureBuilder<DocumentSnapshot>(
-      future: asyncFunction(),
-      builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-        if (snapshot.hasData) {
-          return Scaffold(
-            key: scaffoldKey,
-            backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-            appBar: AppBar(
-              backgroundColor: FlutterFlowTheme.of(context).primaryColor,
-              automaticallyImplyLeading: true,
-              title: Text(
-                eventId,
-                style: FlutterFlowTheme.of(context).title2.override(
-                      fontFamily: 'Metropolis',
-                      color: Colors.white,
-                      fontSize: 22,
-                      useGoogleFonts: false,
-                    ),
+        future: asyncFunction(),
+        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasData) {
+            return Scaffold(
+              key: scaffoldKey,
+              backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+              appBar: AppBar(
+                backgroundColor: FlutterFlowTheme.of(context).primaryColor,
+                automaticallyImplyLeading: true,
+                title: Text(
+                  eventId,
+                  style: FlutterFlowTheme.of(context).title2.override(
+                        fontFamily: 'Metropolis',
+                        color: Colors.white,
+                        fontSize: 22,
+                        useGoogleFonts: false,
+                      ),
+                ),
+                actions: [],
+                centerTitle: true,
+                elevation: 2,
               ),
-              actions: [],
-              centerTitle: true,
-              elevation: 2,
-            ),
-            body: SafeArea(
-              child: GestureDetector(
-                onTap: () => FocusScope.of(context).unfocus(),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Column(
-                      //Event List
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Text("Event Title:"),
-                        Text(snapshot.data?.get("EventTitle")),
-                        /*ListView.separated(
+              body: SafeArea(
+                child: GestureDetector(
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Column(
+                        //Event List
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Text("Event Title:"),
+                          Text(snapshot.data?.get("EventTitle")),
+                          /*ListView.separated(
                           padding: const EdgeInsets.all(8),
                           itemCount: userNames.length,
                           itemBuilder: (BuildContext context, int index) {
@@ -127,20 +105,17 @@ class ManageEventWidget extends StatelessWidget {
                           separatorBuilder: (BuildContext context, int index) =>
                               const Divider(),
                         ),*/
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        } else {
-          return CircularProgressIndicator();
-        }
-      }
-    );
-
-    
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
+        });
   }
 }
 

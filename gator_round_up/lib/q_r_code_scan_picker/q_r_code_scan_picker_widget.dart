@@ -10,11 +10,11 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 
-class ManageEventsWidget extends StatefulWidget {
-  const ManageEventsWidget({Key? key}) : super(key: key);
+class QRCodeScanPickWidget extends StatefulWidget {
+  const QRCodeScanPickWidget({Key? key}) : super(key: key);
 
   @override
-  _ManageEventsState createState() => _ManageEventsState();
+  _QRCodeScanPckState createState() => _QRCodeScanPckState();
 }
 
 Future<void> scanQR() async {
@@ -29,7 +29,7 @@ Future<void> scanQR() async {
   }
 }
 
-class _ManageEventsState extends State<ManageEventsWidget> {
+class _QRCodeScanPckState extends State<QRCodeScanPickWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override

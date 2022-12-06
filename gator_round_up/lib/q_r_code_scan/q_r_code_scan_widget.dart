@@ -7,7 +7,8 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QRCodeScanWidget extends StatefulWidget {
-  const QRCodeScanWidget({Key? key}) : super(key: key);
+  final String eventId;
+  QRCodeScanWidget({Key? key, required this.eventId}) : super(key: key);
 
   @override
   _QRCodeScanWidgetState createState() => _QRCodeScanWidgetState();
@@ -31,11 +32,11 @@ class _QRCodeScanWidgetState extends State<QRCodeScanWidget> {
           backgroundColor: FlutterFlowTheme.of(context).primaryColor,
           title: const Text('Mobile Scanner'),
           titleTextStyle: FlutterFlowTheme.of(context).title2.override(
-            fontFamily: 'Metropolis',
-            color: Colors.white,
-            fontSize: 22,
-            useGoogleFonts: false,
-          ),
+                fontFamily: 'Metropolis',
+                color: Colors.white,
+                fontSize: 22,
+                useGoogleFonts: false,
+              ),
           actions: [
             IconButton(
               color: Colors.white,
@@ -84,7 +85,8 @@ class _QRCodeScanWidgetState extends State<QRCodeScanWidget> {
                     final String code = barcode.rawValue!;
                     debugPrint('Barcode found! $code');
 
-                    //FirebaseFirestore.instance
+                    // Send up user data based on event into event's Users field
+                    // FirebaseFirestore.instance
                     //    .collection("Events")
                     //    .doc(eventId);
                   }
