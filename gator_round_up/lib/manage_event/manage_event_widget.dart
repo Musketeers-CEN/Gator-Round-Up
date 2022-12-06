@@ -10,26 +10,13 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 
-class ManageEventWidget extends StatefulWidget {
-  const ManageEventWidget({Key? key}) : super(key: key);
+String eventId = "";
+class ManageEventWidget extends StatelessWidget  {
+  
+  final String eventId;
+  ManageEventWidget({Key? key, required this.eventId}) : super(key: key);
 
-  @override
-  _ManageEventState createState() => _ManageEventState();
-}
 
-Future<void> scanQR() async {
-  String barcodeScanRes;
-  // Platform messages may fail, so we use a try/catch PlatformException.
-  try {
-    barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
-        '#ff6666', 'Cancel', true, ScanMode.QR);
-    print(barcodeScanRes);
-  } on PlatformException {
-    barcodeScanRes = 'Failed to get platform version.';
-  }
-}
-
-class _ManageEventState extends State<ManageEventWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -41,7 +28,7 @@ class _ManageEventState extends State<ManageEventWidget> {
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         automaticallyImplyLeading: true,
         title: Text(
-          'Manage Events',
+          eventId,
           style: FlutterFlowTheme.of(context).title2.override(
                 fontFamily: 'Metropolis',
                 color: Colors.white,
@@ -64,11 +51,10 @@ class _ManageEventState extends State<ManageEventWidget> {
                 //Event List
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Text("Event Title:")
-                  /*StreamBuilder<List<EventsRecord>>(
+                  StreamBuilder<List<EventsRecord>>(
                     stream: queryEventsRecord(
                       queryBuilder: (eventsRecord) => eventsRecord
-                          .orderBy('StartTime'),
+                          .where("uid", isEqualTo: eventId),
                       limit: 20,
                     ),
                     builder: (context, snapshot) {
@@ -95,22 +81,6 @@ class _ManageEventState extends State<ManageEventWidget> {
                           final listViewEventsRecord =
                               listViewEventsRecordList[listViewIndex];
                           return InkWell(
-                            onTap: () async {
-                              /*To do: generate qr code based on user ID */
-                              context.pushNamed('ManageEvents', queryParams: {"eventId": "codemagic"});
-
-                              /*FirebaseFirestore.instance
-                                  .collection('Events')
-                                  .doc(listViewEventsRecordList[listViewIndex]
-                                      .uid)
-                                  .get()
-                                  .then((DocumentSnapshot documentSnapshot) {
-                                if (documentSnapshot.exists) {
-                                } else {
-                                  throw ('Document does not exist on the database');
-                                }
-                              });*/
-                            },
                             child: ListTile(
                               title: Text(
                                 listViewEventsRecord.eventTitle!,
@@ -124,7 +94,7 @@ class _ManageEventState extends State<ManageEventWidget> {
                                     ),
                               ),
                               subtitle: Text(
-                                '${dateTimeFormat('jm', listViewEventsRecord.startTime)} ${dateTimeFormat('MMMEd', listViewEventsRecord.eventDate)}',
+                                '${dateTimeFormat('jm', listViewEventsRecord.startTime)} ${dateTimeFormat('MMMEd', listViewEventsRecord.eventDate)} --- ${dateTimeFormat('jm', listViewEventsRecord.endTime)} ${dateTimeFormat('MMMEd', listViewEventsRecord.eventDate)}',
                                 style: FlutterFlowTheme.of(context)
                                     .subtitle2
                                     .override(
@@ -141,7 +111,7 @@ class _ManageEventState extends State<ManageEventWidget> {
                         },
                       );
                     },
-                  ),*/
+                  ),
                 ],
               ),
             ],
@@ -149,5 +119,17 @@ class _ManageEventState extends State<ManageEventWidget> {
         ),
       ),
     );
+  }
+}
+
+Future<void> scanQR() async {
+  String barcodeScanRes;
+  // Platform messages may fail, so we use a try/catch PlatformException.
+  try {
+    barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666', 'Cancel', true, ScanMode.QR);
+    print(barcodeScanRes);
+  } on PlatformException {
+    barcodeScanRes = 'Failed to get platform version.';
   }
 }
