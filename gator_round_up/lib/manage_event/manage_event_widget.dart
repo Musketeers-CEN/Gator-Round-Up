@@ -21,7 +21,7 @@ class ManageEventWidget extends StatelessWidget  {
 
   @override
   Widget build(BuildContext context) {
-    String docID = ModalRoute.of(context).settings.arguments.toString();
+    String docID = ModalRoute.of(context)!.settings.arguments.toString();
 
     List<DocumentReference> group = [];
 
@@ -84,68 +84,6 @@ class ManageEventWidget extends StatelessWidget  {
                 //Event List
                 mainAxisSize: MainAxisSize.max,
                 children: [
-<<<<<<< HEAD
-                  StreamBuilder<List<EventsRecord>>(
-                    stream: queryEventsRecord(
-                      queryBuilder: (eventsRecord) => eventsRecord
-                          .where("uid", isEqualTo: eventId),
-                      limit: 20,
-                    ),
-                    builder: (context, snapshot) {
-                      // Customize what your widget looks like when it's loading.
-                      if (!snapshot.hasData) {
-                        return Center(
-                          child: SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: CircularProgressIndicator(
-                              color: FlutterFlowTheme.of(context).primaryColor,
-                            ),
-                          ),
-                        );
-                      }
-                      List<EventsRecord> listViewEventsRecordList =
-                          snapshot.data!;
-                      return ListView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: listViewEventsRecordList.length,
-                        itemBuilder: (context, listViewIndex) {
-                          final listViewEventsRecord =
-                              listViewEventsRecordList[listViewIndex];
-                          return InkWell(
-                            child: ListTile(
-                              title: Text(
-                                listViewEventsRecord.eventTitle!,
-                                style: FlutterFlowTheme.of(context)
-                                    .title1
-                                    .override(
-                                      fontFamily: 'Metropolis',
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryColor,
-                                      useGoogleFonts: false,
-                                    ),
-                              ),
-                              subtitle: Text(
-                                '${dateTimeFormat('jm', listViewEventsRecord.startTime)} ${dateTimeFormat('MMMEd', listViewEventsRecord.eventDate)} --- ${dateTimeFormat('jm', listViewEventsRecord.endTime)} ${dateTimeFormat('MMMEd', listViewEventsRecord.eventDate)}',
-                                style: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: 'Metropolis',
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryColor,
-                                      useGoogleFonts: false,
-                                    ),
-                              ),
-                              tileColor: Color(0xFFF5F5F5),
-                              dense: false,
-                            ),
-                          );
-                        },
-                      );
-                    },
-=======
                   Text("Event Title:"),
                   ListView.separated(
                     padding: const EdgeInsets.all(8),
@@ -158,7 +96,6 @@ class ManageEventWidget extends StatelessWidget  {
                     },
                     separatorBuilder: (BuildContext context, int index) =>
                         const Divider(),
->>>>>>> fa717ce90196fb3e79f0361d00d6b069d66871db
                   ),
                 ],
               ),
