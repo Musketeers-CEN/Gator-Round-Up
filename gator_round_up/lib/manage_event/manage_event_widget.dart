@@ -21,6 +21,39 @@ class ManageEventWidget extends StatelessWidget  {
 
   @override
   Widget build(BuildContext context) {
+    String docID = ModalRoute.of(context).settings.arguments.toString();
+
+    List<DocumentReference> group = [];
+
+    Future<DocumentReference<Map<String, dynamic>>> document = FirebaseFirestore
+        .instance
+        .collection('Events')
+        .doc(docID)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        group = documentSnapshot.get("Users");
+      } else {
+        throw ('Document does not exist on the database');
+      }
+      throw ('Document does not exist on the database');
+    });
+    List<String> userNames = [];
+    group.forEach(
+      (element) {
+        String name = '';
+        FirebaseFirestore.instance
+            .collection("Users")
+            .doc(element.path)
+            .get()
+            .then((DocumentSnapshot documentSnapshot) {
+          name = documentSnapshot.get('displayname');
+        });
+
+        userNames.add(name);
+      },
+    );
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -51,6 +84,7 @@ class ManageEventWidget extends StatelessWidget  {
                 //Event List
                 mainAxisSize: MainAxisSize.max,
                 children: [
+<<<<<<< HEAD
                   StreamBuilder<List<EventsRecord>>(
                     stream: queryEventsRecord(
                       queryBuilder: (eventsRecord) => eventsRecord
@@ -111,6 +145,20 @@ class ManageEventWidget extends StatelessWidget  {
                         },
                       );
                     },
+=======
+                  Text("Event Title:"),
+                  ListView.separated(
+                    padding: const EdgeInsets.all(8),
+                    itemCount: userNames.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        height: 50,
+                        child: Center(child: Text('Entry ${userNames[index]}')),
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) =>
+                        const Divider(),
+>>>>>>> fa717ce90196fb3e79f0361d00d6b069d66871db
                   ),
                 ],
               ),
