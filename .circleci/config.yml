@@ -1,8 +1,9 @@
 version: '2.1'
 orbs:
-  flutter: circleci/flutter@1.0
+  flutter: circleci/flutter@1.1.0
 workflows:
   test:
     jobs:
-      - flutter/lint:
+      - flutter/unit_test:
           version: 2.2.3
+
