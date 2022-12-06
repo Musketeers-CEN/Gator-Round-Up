@@ -1,0 +1,9 @@
+version: '2.1'
+orbs:
+  flutter: circleci/flutter@1.0
+workflows:
+  test:
+    jobs:
+      - flutter/lint:
+          version: 2.2.3
+          app-dir: '/gator_round_up'
