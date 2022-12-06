@@ -11,39 +11,38 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 
 String eventId = "";
-class ManageEventWidget extends StatelessWidget  {
-  
+
+class ManageEventWidget extends StatelessWidget {
   final String eventId;
   ManageEventWidget({Key? key, required this.eventId}) : super(key: key);
-
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
-    String docID = ModalRoute.of(context)!.settings.arguments.toString();
+    List<dynamic> group = [];
 
-    List<DocumentReference> group = [];
+    //document is still not being found
 
-    Future<DocumentReference<Map<String, dynamic>>> document = FirebaseFirestore
-        .instance
-        .collection('Events')
-        .doc(docID)
+    Future<List<dynamic>> document = FirebaseFirestore.instance
+        .doc(eventId)
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
-        group = documentSnapshot.get("Users");
+        return group = documentSnapshot.get("Users");
       } else {
         throw ('Document does not exist on the database');
       }
-      throw ('Document does not exist on the database');
     });
+
+    print(group);
+
     List<String> userNames = [];
     group.forEach(
       (element) {
         String name = '';
         FirebaseFirestore.instance
-            .collection("Users")
+            .collection("users")
             .doc(element.path)
             .get()
             .then((DocumentSnapshot documentSnapshot) {
@@ -53,6 +52,8 @@ class ManageEventWidget extends StatelessWidget  {
         userNames.add(name);
       },
     );
+
+    print(userNames);
 
     return Scaffold(
       key: scaffoldKey,
@@ -85,18 +86,18 @@ class ManageEventWidget extends StatelessWidget  {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Text("Event Title:"),
-                  ListView.separated(
-                    padding: const EdgeInsets.all(8),
-                    itemCount: userNames.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        height: 50,
-                        child: Center(child: Text('Entry ${userNames[index]}')),
-                      );
-                    },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(),
-                  ),
+                  // ListView.separated(
+                  //   padding: const EdgeInsets.all(8),
+                  //   itemCount: userNames.length,
+                  //   itemBuilder: (BuildContext context, int index) {
+                  //     return Container(
+                  //       height: 50,
+                  //       child: Center(child: Text('Entry ${userNames[index]}')),
+                  //     );
+                  //   },
+                  //   separatorBuilder: (BuildContext context, int index) =>
+                  //       const Divider(),
+                  // ),
                 ],
               ),
             ],

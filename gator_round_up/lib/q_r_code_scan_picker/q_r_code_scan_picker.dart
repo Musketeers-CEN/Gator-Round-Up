@@ -96,8 +96,9 @@ class _ManageEventsState extends State<ManageEventsWidget> {
                           return InkWell(
                             onTap: () async {
                               /*To do: generate qr code based on user ID */
-                              context.pushNamed('ManageEvent', params: {
-                                "eventId": listViewEventsRecord.reference.path,
+                              context.pushNamed('QRCodeScan', params: {
+                                "eventId":
+                                    listViewEventsRecord.reference.toString()
                               });
                             },
                             child: ListTile(
