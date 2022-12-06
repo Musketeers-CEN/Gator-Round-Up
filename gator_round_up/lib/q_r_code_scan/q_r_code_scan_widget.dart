@@ -1,4 +1,5 @@
 import 'dart:html';
+import 'package:gator_round_up/backend/backend.dart';
 import 'package:gator_round_up/index.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +20,9 @@ Get a drop down or eventlist working then when an individual is selected it
 */
 
 class _QRCodeScanWidgetState extends State<QRCodeScanWidget> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();      
-      
- MobileScannerController cameraController = MobileScannerController();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  MobileScannerController cameraController = MobileScannerController();
 
   @override
   Widget build(BuildContext context) {
@@ -65,17 +66,20 @@ class _QRCodeScanWidgetState extends State<QRCodeScanWidget> {
           ],
         ),
         body: SafeArea(
-          child: MobileScanner(
-            allowDuplicates: false,
-            controller: cameraController,
-            onDetect: (barcode, args) {
-              if (barcode.rawValue == null) {
-                debugPrint('Failed to scan Barcode');
-              } else {
-                final String code = barcode.rawValue!;
-                debugPrint('Barcode found! $code');
-              }
-            }))            
-          );         
+            child: MobileScanner(
+                allowDuplicates: false,
+                controller: cameraController,
+                onDetect: (barcode, args) {
+                  if (barcode.rawValue == null) {
+                    debugPrint('Failed to scan Barcode');
+                  } else {
+                    final String code = barcode.rawValue!;
+                    debugPrint('Barcode found! $code');
+
+                    //FirebaseFirestore.instance
+                    //    .collection("Events")
+                    //    .doc(eventId);
+                  }
+                })));
   }
 }
