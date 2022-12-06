@@ -41,6 +41,31 @@ class ManageEventWidget extends StatelessWidget {
       return document;
     }
 
+    String userRefToName(String ref) {
+      //remove extra info
+      ref = ref.substring(ref.indexOf('(') + 1, ref.indexOf(')'));
+
+      debugPrint("Ref: " + ref);
+      Future<DocumentSnapshot> name = FirebaseFirestore.instance
+          .doc(ref)
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          return documentSnapshot;
+        } else {
+          throw ('Document does not exist on the database');
+        }
+      });
+
+      String result = "";
+      name.then((DocumentSnapshot doc) {
+        debugPrint(doc.get("display_name"));
+        result = doc.get("display_name");
+      });
+
+      return result;
+    }
+
     //document is still not being found
 
     /*Future<List<dynamic>> document = FirebaseFirestore.instance
@@ -68,7 +93,7 @@ class ManageEventWidget extends StatelessWidget {
                 backgroundColor: FlutterFlowTheme.of(context).primaryColor,
                 automaticallyImplyLeading: true,
                 title: Text(
-                  eventId,
+                  snapshot.data?.get("EventTitle"),
                   style: FlutterFlowTheme.of(context).title2.override(
                         fontFamily: 'Metropolis',
                         color: Colors.white,
@@ -91,20 +116,32 @@ class ManageEventWidget extends StatelessWidget {
                         //Event List
                         mainAxisSize: MainAxisSize.max,
                         children: [
-                          Text("Event Title:"),
-                          Text(snapshot.data?.get("EventTitle")),
-                          /*ListView.separated(
-                          padding: const EdgeInsets.all(8),
-                          itemCount: userNames.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Container(
-                              height: 50,
-                              child: Center(child: Text('Entry ${userNames[index]}')),
-                            );
-                          },
-                          separatorBuilder: (BuildContext context, int index) =>
-                              const Divider(),
-                        ),*/
+                          ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: snapshot.data?.get("Users").length,
+                            itemBuilder: (context, listViewIndex) {
+                              final listViewEventsRecord =
+                                  snapshot.data?.get("Users")[listViewIndex];
+                              return ListTile(
+                                title: Text(
+                                  listViewEventsRecord
+                                      .toString(), //userRefToName(listViewEventsRecord.toString()),
+                                  style: FlutterFlowTheme.of(context)
+                                      .title1
+                                      .override(
+                                        fontFamily: 'Metropolis',
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryColor,
+                                        useGoogleFonts: false,
+                                      ),
+                                ),
+                                tileColor: Color(0xFFF5F5F5),
+                                dense: false,
+                              );
+                            },
+                          ),
                         ],
                       ),
                     ],
