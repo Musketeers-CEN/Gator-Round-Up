@@ -96,25 +96,9 @@ class _ManageEventsState extends State<ManageEventsWidget> {
                           return InkWell(
                             onTap: () async {
                               /*To do: generate qr code based on user ID */
-<<<<<<< HEAD
-                              context.pushNamed('ManageEvent', params: {"eventId": listViewEventsRecord.uid!});
-
-                              /*FirebaseFirestore.instance
-                                  .collection('Events')
-                                  .doc(listViewEventsRecordList[listViewIndex]
-                                      .uid)
-                                  .get()
-                                  .then((DocumentSnapshot documentSnapshot) {
-                                if (documentSnapshot.exists) {
-                                } else {
-                                  throw ('Document does not exist on the database');
-                                }
-                              });*/
-=======
                               context.pushNamed('ManageEvent', params: {
                                 "eventId": listViewEventsRecord.uid!
                               });
->>>>>>> fa717ce90196fb3e79f0361d00d6b069d66871db
                             },
                             child: ListTile(
                               title: Text(
