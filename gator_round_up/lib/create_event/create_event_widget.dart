@@ -4,6 +4,13 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import "dart:math";
+
+const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+Random _rnd = Random();
+
+String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+    length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
 class CreateEventWidget extends StatefulWidget {
   const CreateEventWidget({Key? key}) : super(key: key);
@@ -329,6 +336,7 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                         startTime: datePicked2,
                         endTime: datePicked3,
                         eventDate: datePicked1,
+                        uid: getRandomString(28)
                       );
                       await EventsRecord.collection.doc().set(eventsCreateData);
                       context.pushNamed('home');

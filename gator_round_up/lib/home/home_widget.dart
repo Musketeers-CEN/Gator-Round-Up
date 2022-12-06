@@ -133,8 +133,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                         },
                         text: 'Scan QR Code',
                         options: FFButtonOptions(
-                          width: 140,
-                          height: 80,
+                          width: 120,
+                          height: 100,
                           color: FlutterFlowTheme.of(context).primaryColor,
                           textStyle:
                               FlutterFlowTheme.of(context).subtitle2.override(
@@ -158,8 +158,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                         },
                         text: 'Manage Events',
                         options: FFButtonOptions(
-                          width: 140,
-                          height: 80,
+                          width: 120,
+                          height: 100,
                           color: FlutterFlowTheme.of(context).primaryColor,
                           textStyle:
                               FlutterFlowTheme.of(context).subtitle2.override(
@@ -183,8 +183,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                         },
                         text: 'Create Event',
                         options: FFButtonOptions(
-                          width: 140,
-                          height: 80,
+                          width: 120,
+                          height: 100,
                           color: FlutterFlowTheme.of(context).primaryColor,
                           textStyle:
                               FlutterFlowTheme.of(context).subtitle2.override(

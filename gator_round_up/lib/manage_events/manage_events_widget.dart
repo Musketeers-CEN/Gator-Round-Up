@@ -96,7 +96,7 @@ class _ManageEventsState extends State<ManageEventsWidget> {
                           return InkWell(
                             onTap: () async {
                               /*To do: generate qr code based on user ID */
-                              context.pushNamed('ManageEvent', params: {"eventId": listViewEventsRecord.eventTitle!});
+                              context.pushNamed('ManageEvent', params: {"eventId": listViewEventsRecord.uid!});
 
                               /*FirebaseFirestore.instance
                                   .collection('Events')
