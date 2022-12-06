@@ -6,4 +6,4 @@ workflows:
     jobs:
       - flutter/lint:
           version: 2.2.3
-          app-dir: '/gator_round_up'
+          app-dir: /gator_round_up
