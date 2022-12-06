@@ -66,8 +66,8 @@ class _ManageEventsState extends State<ManageEventsWidget> {
                 children: [
                   StreamBuilder<List<EventsRecord>>(
                     stream: queryEventsRecord(
-                      queryBuilder: (eventsRecord) => eventsRecord
-                          .orderBy('StartTime'),
+                      queryBuilder: (eventsRecord) =>
+                          eventsRecord.orderBy('StartTime'),
                       limit: 20,
                     ),
                     builder: (context, snapshot) {
@@ -96,19 +96,9 @@ class _ManageEventsState extends State<ManageEventsWidget> {
                           return InkWell(
                             onTap: () async {
                               /*To do: generate qr code based on user ID */
-                              context.pushNamed('ManageEvent', params: {"eventId": listViewEventsRecord.eventTitle!});
-
-                              /*FirebaseFirestore.instance
-                                  .collection('Events')
-                                  .doc(listViewEventsRecordList[listViewIndex]
-                                      .uid)
-                                  .get()
-                                  .then((DocumentSnapshot documentSnapshot) {
-                                if (documentSnapshot.exists) {
-                                } else {
-                                  throw ('Document does not exist on the database');
-                                }
-                              });*/
+                              context.pushNamed('ManageEvent', params: {
+                                "eventId": listViewEventsRecord.uid!
+                              });
                             },
                             child: ListTile(
                               title: Text(
