@@ -96,7 +96,7 @@ Map<String, dynamic> createEventsRecordData({
     EventsRecord(
       (e) => e
         ..eventTitle = eventTitle
-        ..users = null
+        ..users = ListBuilder()
         ..eventSummary = eventSummary
         ..email = email
         ..displayName = displayName

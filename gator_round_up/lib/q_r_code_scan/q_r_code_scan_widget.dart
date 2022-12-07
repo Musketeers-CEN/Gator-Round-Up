@@ -5,7 +5,21 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
+
+Future<bool?> toast(String message) {
+  return Fluttertoast.showToast(
+      msg: message,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 3,
+      backgroundColor: Colors.redAccent,
+      textColor: Colors.white,
+      fontSize: 15.0);
+}
+
+// ignore: must_be_immutable
 class QRCodeScanWidget extends StatelessWidget {
   final String eventId;
   QRCodeScanWidget({Key? key, required this.eventId}) : super(key: key);
@@ -13,6 +27,8 @@ class QRCodeScanWidget extends StatelessWidget {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   MobileScannerController cameraController = MobileScannerController();
+  
+  
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +95,9 @@ class QRCodeScanWidget extends StatelessWidget {
                     // Send up user data based on event into event's Users field
                     FirebaseFirestore.instance
                       .doc(eventId).update({"Users": FieldValue.arrayUnion([userRef.reference])});
-                  }
+
+                    toast(userRef.get("email"));
+                    }
                 })));
   }
 }
