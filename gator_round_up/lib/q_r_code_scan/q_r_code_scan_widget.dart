@@ -1,9 +1,6 @@
-import 'dart:html';
 import 'package:gator_round_up/backend/backend.dart';
-import 'package:gator_round_up/index.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
