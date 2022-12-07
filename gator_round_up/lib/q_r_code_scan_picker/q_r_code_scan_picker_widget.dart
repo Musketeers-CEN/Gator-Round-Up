@@ -98,7 +98,7 @@ class _QRCodeScanPckState extends State<QRCodeScanPickWidget> {
                               /*To do: generate qr code based on user ID */
                               context.pushNamed('QRCodeScan', params: {
                                 "eventId":
-                                    listViewEventsRecord.reference.toString()
+                                    listViewEventsRecord.reference.path
                               });
                             },
                             child: ListTile(

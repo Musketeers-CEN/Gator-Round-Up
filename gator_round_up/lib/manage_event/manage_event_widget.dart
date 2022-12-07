@@ -3,11 +3,8 @@ import 'dart:html';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
-import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 
 String eventTitle = "Loading...";
@@ -19,73 +16,44 @@ class ManageEventWidget extends StatelessWidget {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    List<dynamic> group = [];
+    int epicLength = -1;
+    List<String> strArr = [];
 
-    Future<DocumentSnapshot>? asyncFunction() {
-      print("HERE2");
-
+    Future<DocumentSnapshot?>? asyncFunction() async {
       if (eventId == "") {
         return null;
       }
 
-      Future<DocumentSnapshot> document = FirebaseFirestore.instance
-          .doc(eventId)
-          .get()
-          .then((DocumentSnapshot documentSnapshot) {
-        if (documentSnapshot.exists) {
-          return documentSnapshot;
-        } else {
-          throw ('Document does not exist on the database');
+      DocumentSnapshot document = await FirebaseFirestore.instance.doc(eventId).get();
+
+      if(document.exists){
+        var Users = document.get("Users");
+        epicLength = Users.length;
+
+        for(var userRef in Users){
+          DocumentSnapshot userSnap = await userRef.get();
+          if (userSnap.exists) {
+            String email = userSnap.get("email");
+            if(!strArr.contains(email)){
+              strArr.add(email);
+            }
+          }
+          else{
+            print("User no existo");
+          }
         }
-      });
+      }
+      else {
+        throw ('Document does not exist on the database');
+      }
+
       return document;
     }
 
-    String userRefToName(String ref) {
-      //remove extra info
-      ref = ref.substring(ref.indexOf('(') + 1, ref.indexOf(')'));
-
-      debugPrint("Ref: " + ref);
-      Future<DocumentSnapshot> name = FirebaseFirestore.instance
-          .doc(ref)
-          .get()
-          .then((DocumentSnapshot documentSnapshot) {
-        if (documentSnapshot.exists) {
-          return documentSnapshot;
-        } else {
-          throw ('Document does not exist on the database');
-        }
-      });
-
-      String result = "";
-      name.then((DocumentSnapshot doc) {
-        debugPrint(doc.get("display_name"));
-        result = doc.get("display_name");
-      });
-
-      return result;
-    }
-
-    //document is still not being found
-
-    /*Future<List<dynamic>> document = FirebaseFirestore.instance
-        .doc(eventId)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        print("HERE");
-        eventTitle = documentSnapshot.get("EventTitle");
-        print(eventTitle);
-        return group = documentSnapshot.get("Users");
-      } else {
-        throw ('Document does not exist on the database');
-      }
-    });*/
-
-    return FutureBuilder<DocumentSnapshot>(
+    return FutureBuilder<DocumentSnapshot?>(
         future: asyncFunction(),
-        builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.hasData) {
+        builder: (context, AsyncSnapshot<DocumentSnapshot?> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
             return Scaffold(
               key: scaffoldKey,
               backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -120,14 +88,11 @@ class ManageEventWidget extends StatelessWidget {
                             padding: EdgeInsets.zero,
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
-                            itemCount: snapshot.data?.get("Users").length,
-                            itemBuilder: (context, listViewIndex) {
-                              final listViewEventsRecord =
-                                  snapshot.data?.get("Users")[listViewIndex];
+                            itemCount: strArr.length,
+                            itemBuilder: (context, int index) {
                               return ListTile(
                                 title: Text(
-                                  listViewEventsRecord
-                                      .toString(), //userRefToName(listViewEventsRecord.toString()),
+                                  strArr[index], //userRefToName(listViewEventsRecord.toString()),
                                   style: FlutterFlowTheme.of(context)
                                       .title1
                                       .override(
