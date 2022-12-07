@@ -450,9 +450,15 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             .update(usersCreateData);
 
                         if (textController2!.text == 'DanceMarathonExec2022') {
+                          final User = await signInWithEmail(
+                          context,
+                          emailTextController!.text,
+                          passwordTextController!.text,
+                          );
+                        
+                          context.goNamedAuth('Home', mounted);
                           return;
-                        }
-                        //return;
+                        }                        
                         final User = await signInWithEmail(
                           context,
                           emailTextController!.text,
@@ -460,6 +466,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                           );
 
                         context.goNamedAuth('Home', mounted);
+                        return;
                       },
                       text: 'Sign up',
                       options: FFButtonOptions(
