@@ -3,108 +3,121 @@ import 'dart:html';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
-import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 
-String eventId = "";
+String eventTitle = "Loading...";
 
 class ManageEventWidget extends StatelessWidget {
   final String eventId;
   ManageEventWidget({Key? key, required this.eventId}) : super(key: key);
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-
   @override
   Widget build(BuildContext context) {
-    List<dynamic> group = [];
+    int epicLength = -1;
+    List<String> strArr = [];
 
-    //document is still not being found
+    Future<DocumentSnapshot?>? asyncFunction() async {
+      if (eventId == "") {
+        return null;
+      }
 
-    Future<List<dynamic>> document = FirebaseFirestore.instance
-        .doc(eventId)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        return group = documentSnapshot.get("Users");
-      } else {
+      DocumentSnapshot document = await FirebaseFirestore.instance.doc(eventId).get();
+
+      if(document.exists){
+        var Users = document.get("Users");
+        epicLength = Users.length;
+
+        for(var userRef in Users){
+          DocumentSnapshot userSnap = await userRef.get();
+          if (userSnap.exists) {
+            String email = userSnap.get("email");
+            if(!strArr.contains(email)){
+              strArr.add(email);
+            }
+          }
+          else{
+            print("User no existo");
+          }
+        }
+      }
+      else {
         throw ('Document does not exist on the database');
       }
-    });
 
-    print(group);
+      return document;
+    }
 
-    List<String> userNames = [];
-    group.forEach(
-      (element) {
-        String name = '';
-        FirebaseFirestore.instance
-            .collection("users")
-            .doc(element.path)
-            .get()
-            .then((DocumentSnapshot documentSnapshot) {
-          name = documentSnapshot.get('displayname');
+    return FutureBuilder<DocumentSnapshot?>(
+        future: asyncFunction(),
+        builder: (context, AsyncSnapshot<DocumentSnapshot?> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
+            return Scaffold(
+              key: scaffoldKey,
+              backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+              appBar: AppBar(
+                backgroundColor: FlutterFlowTheme.of(context).primaryColor,
+                automaticallyImplyLeading: true,
+                title: Text(
+                  snapshot.data?.get("EventTitle"),
+                  style: FlutterFlowTheme.of(context).title2.override(
+                        fontFamily: 'Metropolis',
+                        color: Colors.white,
+                        fontSize: 22,
+                        useGoogleFonts: false,
+                      ),
+                ),
+                actions: [],
+                centerTitle: true,
+                elevation: 2,
+              ),
+              body: SafeArea(
+                child: GestureDetector(
+                  onTap: () => FocusScope.of(context).unfocus(),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Column(
+                        //Event List
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          ListView.builder(
+                            padding: EdgeInsets.zero,
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: strArr.length,
+                            itemBuilder: (context, int index) {
+                              return ListTile(
+                                title: Text(
+                                  strArr[index], //userRefToName(listViewEventsRecord.toString()),
+                                  style: FlutterFlowTheme.of(context)
+                                      .title1
+                                      .override(
+                                        fontFamily: 'Metropolis',
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryColor,
+                                        useGoogleFonts: false,
+                                      ),
+                                ),
+                                tileColor: Color(0xFFF5F5F5),
+                                dense: false,
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          } else {
+            return CircularProgressIndicator();
+          }
         });
-
-        userNames.add(name);
-      },
-    );
-
-    print(userNames);
-
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).primaryColor,
-        automaticallyImplyLeading: true,
-        title: Text(
-          eventId,
-          style: FlutterFlowTheme.of(context).title2.override(
-                fontFamily: 'Metropolis',
-                color: Colors.white,
-                fontSize: 22,
-                useGoogleFonts: false,
-              ),
-        ),
-        actions: [],
-        centerTitle: true,
-        elevation: 2,
-      ),
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Column(
-                //Event List
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Text("Event Title:"),
-                  // ListView.separated(
-                  //   padding: const EdgeInsets.all(8),
-                  //   itemCount: userNames.length,
-                  //   itemBuilder: (BuildContext context, int index) {
-                  //     return Container(
-                  //       height: 50,
-                  //       child: Center(child: Text('Entry ${userNames[index]}')),
-                  //     );
-                  //   },
-                  //   separatorBuilder: (BuildContext context, int index) =>
-                  //       const Divider(),
-                  // ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }
 

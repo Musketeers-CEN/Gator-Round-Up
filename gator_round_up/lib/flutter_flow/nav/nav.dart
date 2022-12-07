@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:gator_round_up/q_r_code_scan_picker/q_r_code_scan_picker_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:page_transition/page_transition.dart';
 import '../flutter_flow_theme.dart';
@@ -94,8 +95,15 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             ),
             FFRoute(
               name: 'QRCodeScan',
-              path: 'qRCodeScan',
-              builder: (context, params) => QRCodeScanWidget(),
+              path: 'qRCodeScan/:eventId',
+              builder: (context, params) => QRCodeScanWidget(
+                eventId: params.getParam("eventId", ParamType.String),
+              ),
+            ),
+            FFRoute(
+              name: 'QRCodeScanPicker',
+              path: 'qRCodeScanPicker',
+              builder: (context, params) => QRCodeScanPickWidget(),
             ),
             FFRoute(
               name: 'CreateEvent',
@@ -110,7 +118,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             FFRoute(
               name: 'ManageEvent',
               path: 'ManageEvent/:eventId',
-              builder: (context, params) => ManageEventWidget(eventId: params.getParam("eventId", ParamType.String),),
+              builder: (context, params) => ManageEventWidget(
+                eventId: params.getParam("eventId", ParamType.String),
+              ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),

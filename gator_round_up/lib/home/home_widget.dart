@@ -129,7 +129,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                     AuthUserStreamWidget(
                       child: FFButtonWidget(
                         onPressed: () async {
-                          context.pushNamed('QRCodeScan');
+                          context.pushNamed('QRCodeScanPicker');
                         },
                         text: 'Scan QR Code',
                         options: FFButtonOptions(
@@ -200,7 +200,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                         ),
                       ),
                     ),
-                  
                 ],
               ),
               Column(
@@ -211,12 +210,12 @@ class _HomeWidgetState extends State<HomeWidget> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(15),
-                        child: SelectionArea(
-                          child: Text(
-                        'Upcoming Events',
-                        style: FlutterFlowTheme.of(context).bodyText1,
-                      ))),
+                          padding: EdgeInsets.all(15),
+                          child: SelectionArea(
+                              child: Text(
+                            'Upcoming Events',
+                            style: FlutterFlowTheme.of(context).bodyText1,
+                          ))),
                     ],
                   ),
                   StreamBuilder<List<EventsRecord>>(

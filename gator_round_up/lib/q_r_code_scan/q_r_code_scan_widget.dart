@@ -6,20 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
-class QRCodeScanWidget extends StatefulWidget {
-  const QRCodeScanWidget({Key? key}) : super(key: key);
+class QRCodeScanWidget extends StatelessWidget {
+  final String eventId;
+  QRCodeScanWidget({Key? key, required this.eventId}) : super(key: key);
 
-  @override
-  _QRCodeScanWidgetState createState() => _QRCodeScanWidgetState();
-}
-
-/* 
-Get a drop down or eventlist working then when an individual is selected it 
-1. opens qr code scanner (DONE THAT)
-2. once scanned grab the data and send to the selected event into the users list if not scanned do nothing
-*/
-
-class _QRCodeScanWidgetState extends State<QRCodeScanWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   MobileScannerController cameraController = MobileScannerController();
@@ -31,11 +21,11 @@ class _QRCodeScanWidgetState extends State<QRCodeScanWidget> {
           backgroundColor: FlutterFlowTheme.of(context).primaryColor,
           title: const Text('Mobile Scanner'),
           titleTextStyle: FlutterFlowTheme.of(context).title2.override(
-            fontFamily: 'Metropolis',
-            color: Colors.white,
-            fontSize: 22,
-            useGoogleFonts: false,
-          ),
+                fontFamily: 'Metropolis',
+                color: Colors.white,
+                fontSize: 22,
+                useGoogleFonts: false,
+              ),
           actions: [
             IconButton(
               color: Colors.white,
@@ -77,17 +67,25 @@ class _QRCodeScanWidgetState extends State<QRCodeScanWidget> {
             child: MobileScanner(
                 allowDuplicates: false,
                 controller: cameraController,
-                onDetect: (barcode, args) {
+                onDetect: (barcode, args) async {
                   if (barcode.rawValue == null) {
                     debugPrint('Failed to scan Barcode');
                   } else {
                     final String code = barcode.rawValue!;
+                    String code2 = "/users/"+code;
                     debugPrint('Barcode found! $code');
 
-                    //FirebaseFirestore.instance
-                    //    .collection("Events")
-                    //    .doc(eventId);
+                    var userRef = await FirebaseFirestore.instance.doc(code2).get();
+                    // Send up user data based on event into event's Users field
+                    FirebaseFirestore.instance
+                      .doc(eventId).update({"Users": FieldValue.arrayUnion([userRef.reference])});
                   }
                 })));
   }
 }
+
+/* 
+Get a drop down or eventlist working then when an individual is selected it 
+1. opens qr code scanner (DONE THAT)
+2. once scanned grab the data and send to the selected event into the users list if not scanned do nothing
+*/
