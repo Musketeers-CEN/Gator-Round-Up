@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
@@ -450,8 +452,12 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                         if (textController2!.text == 'DanceMarathonExec2022') {
                           return;
                         }
-
-                        return;
+                        //return;
+                        final User = await signInWithEmail(
+                          context,
+                          emailTextController!.text,
+                          passwordTextController!.text,
+                          );
 
                         context.goNamedAuth('Home', mounted);
                       },
@@ -478,12 +484,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                   ],
                 ),
               ),
-              /*Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                ],
-              ),*/
             ],
           ),
         ),
