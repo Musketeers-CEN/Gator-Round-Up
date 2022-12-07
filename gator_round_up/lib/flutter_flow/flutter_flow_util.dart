@@ -7,11 +7,8 @@ import 'package:from_css_color/from_css_color.dart';
 import 'package:intl/intl.dart';
 import 'package:json_path/json_path.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:url_launcher/url_launcher.dart';
 
 import '../main.dart';
-
-import 'lat_lng.dart';
 
 export 'lat_lng.dart';
 export 'place.dart';
@@ -38,7 +35,7 @@ String dateTimeFormat(String format, DateTime? dateTime, {String? locale}) {
 Future launchURL(String url) async {
   var uri = Uri.parse(url).toString();
   try {
-    await launch(uri);
+    await launchURL(uri);
   } catch (e) {
     throw 'Could not launch $uri: $e';
   }

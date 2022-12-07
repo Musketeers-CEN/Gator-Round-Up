@@ -1,0 +1,29 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "gator_round_up",
+            "cwd": "gator_round_up",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "gator_round_up (profile mode)",
+            "cwd": "gator_round_up",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "gator_round_up (release mode)",
+            "cwd": "gator_round_up",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

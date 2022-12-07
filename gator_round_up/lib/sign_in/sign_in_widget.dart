@@ -1,11 +1,8 @@
 import '../auth/auth_util.dart';
-import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SignInWidget extends StatefulWidget {
   const SignInWidget({Key? key}) : super(key: key);
@@ -337,71 +334,6 @@ class _SignInWidgetState extends State<SignInWidget> {
                             width: 1,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
-                            child: FlutterFlowIconButton(
-                              borderColor: Colors.transparent,
-                              borderRadius: 30,
-                              borderWidth: 1,
-                              buttonSize: 50,
-                              fillColor: FlutterFlowTheme.of(context)
-                                  .secondaryBackground,
-                              icon: FaIcon(
-                                FontAwesomeIcons.google,
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                size: 24,
-                              ),
-                              onPressed: () async {
-                                GoRouter.of(context).prepareAuthEvent();
-                                final user = await signInWithGoogle(context);
-                                if (user == null) {
-                                  return;
-                                }
-
-                                context.goNamedAuth('Home', mounted);
-                              },
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
-                            child: FlutterFlowIconButton(
-                              borderColor: Colors.transparent,
-                              borderRadius: 30,
-                              borderWidth: 1,
-                              buttonSize: 50,
-                              fillColor: FlutterFlowTheme.of(context)
-                                  .secondaryBackground,
-                              icon: FaIcon(
-                                FontAwesomeIcons.apple,
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                size: 24,
-                              ),
-                              onPressed: () async {
-                                GoRouter.of(context).prepareAuthEvent();
-                                final user = await signInWithApple(context);
-                                if (user == null) {
-                                  return;
-                                }
-
-                                context.goNamedAuth('Home', mounted);
-                              },
-                            ),
-                          ),
-                        ],
                       ),
                     ],
                   ),

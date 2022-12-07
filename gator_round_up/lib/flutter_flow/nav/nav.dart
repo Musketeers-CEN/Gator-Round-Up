@@ -4,13 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:page_transition/page_transition.dart';
 import '../flutter_flow_theme.dart';
-import '../../backend/backend.dart';
 import '../../auth/firebase_user_provider.dart';
 
 import '../../index.dart';
-import '../../main.dart';
-import '../lat_lng.dart';
-import '../place.dart';
 import 'serialization_util.dart';
 
 export 'package:go_router/go_router.dart';
@@ -98,13 +94,32 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
             ),
             FFRoute(
               name: 'QRCodeScan',
-              path: 'qRCodeScan',
-              builder: (context, params) => QRCodeScanWidget(),
+              path: 'qRCodeScan/:eventId',
+              builder: (context, params) => QRCodeScanWidget(
+                eventId: params.getParam("eventId", ParamType.String),
+              ),
+            ),
+            FFRoute(
+              name: 'QRCodeScanPicker',
+              path: 'qRCodeScanPicker',
+              builder: (context, params) => QRCodeScanPickWidget(),
             ),
             FFRoute(
               name: 'CreateEvent',
               path: 'createEvent',
               builder: (context, params) => CreateEventWidget(),
+            ),
+            FFRoute(
+              name: 'ManageEvents',
+              path: 'ManageEvents',
+              builder: (context, params) => ManageEventsWidget(),
+            ),
+            FFRoute(
+              name: 'ManageEvent',
+              path: 'ManageEvent/:eventId',
+              builder: (context, params) => ManageEventWidget(
+                eventId: params.getParam("eventId", ParamType.String),
+              ),
             )
           ].map((r) => r.toRoute(appStateNotifier)).toList(),
         ).toRoute(appStateNotifier),

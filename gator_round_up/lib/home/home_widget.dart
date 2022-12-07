@@ -1,16 +1,30 @@
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({Key? key}) : super(key: key);
 
   @override
   _HomeWidgetState createState() => _HomeWidgetState();
+}
+
+Future<void> scanQR() async {
+  String barcodeScanRes;
+  // Platform messages may fail, so we use a try/catch PlatformException.
+  try {
+    barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
+        '#ff6666', 'Cancel', true, ScanMode.QR);
+    print(barcodeScanRes);
+  } on PlatformException {
+    barcodeScanRes = 'Failed to get platform version.';
+  }
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
@@ -85,7 +99,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 children: [
                   FFButtonWidget(
                     onPressed: () async {
-                      context.pushNamed('QRCode');
+                      context.pushNamed('qRCode');
                     },
                     text: 'QR Code',
                     options: FFButtonOptions(
@@ -115,12 +129,37 @@ class _HomeWidgetState extends State<HomeWidget> {
                     AuthUserStreamWidget(
                       child: FFButtonWidget(
                         onPressed: () async {
-                          context.pushNamed('QRCodeScan');
+                          context.pushNamed('QRCodeScanPicker');
                         },
                         text: 'Scan QR Code',
                         options: FFButtonOptions(
-                          width: 140,
-                          height: 80,
+                          width: 120,
+                          height: 100,
+                          color: FlutterFlowTheme.of(context).primaryColor,
+                          textStyle:
+                              FlutterFlowTheme.of(context).subtitle2.override(
+                                    fontFamily: 'Metropolis',
+                                    color: Colors.white,
+                                    useGoogleFonts: false,
+                                  ),
+                          borderSide: BorderSide(
+                            color: Colors.transparent,
+                            width: 1,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                  if (valueOrDefault<bool>(currentUserDocument?.admin, false))
+                    AuthUserStreamWidget(
+                      child: FFButtonWidget(
+                        onPressed: () async {
+                          context.pushNamed('ManageEvents');
+                        },
+                        text: 'Manage Events',
+                        options: FFButtonOptions(
+                          width: 120,
+                          height: 100,
                           color: FlutterFlowTheme.of(context).primaryColor,
                           textStyle:
                               FlutterFlowTheme.of(context).subtitle2.override(
@@ -144,8 +183,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                         },
                         text: 'Create Event',
                         options: FFButtonOptions(
-                          width: 140,
-                          height: 80,
+                          width: 120,
+                          height: 100,
                           color: FlutterFlowTheme.of(context).primaryColor,
                           textStyle:
                               FlutterFlowTheme.of(context).subtitle2.override(
@@ -170,11 +209,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SelectionArea(
-                          child: Text(
-                        'Upcoming Events',
-                        style: FlutterFlowTheme.of(context).bodyText1,
-                      )),
+                      Padding(
+                          padding: EdgeInsets.all(15),
+                          child: SelectionArea(
+                              child: Text(
+                            'Upcoming Events',
+                            style: FlutterFlowTheme.of(context).bodyText1,
+                          ))),
                     ],
                   ),
                   StreamBuilder<List<EventsRecord>>(

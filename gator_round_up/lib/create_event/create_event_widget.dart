@@ -1,12 +1,16 @@
-import '../auth/auth_util.dart';
 import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:google_fonts/google_fonts.dart';
+import "dart:math";
+
+const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+Random _rnd = Random();
+
+String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+    length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
 class CreateEventWidget extends StatefulWidget {
   const CreateEventWidget({Key? key}) : super(key: key);
@@ -24,11 +28,15 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
   final formKey = GlobalKey<FormState>();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  String eventDateText = "Event Date";
+  String startTimeText = "Start Time";
+  String endTimeText = "End Time";
+
   @override
   void initState() {
     super.initState();
     eventNameFieldController = TextEditingController();
-    shortBioFieldController = TextEditingController();
+    shortBioFieldController = TextEditingController();  
   }
 
   @override
@@ -193,12 +201,13 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                                 showTitleActions: true,
                                 onConfirm: (date) {
                                   setState(() => datePicked1 = date);
+                                  eventDateText = date.month.toString() + "/" + date.day.toString() + "/" + date.year.toString();
                                 },
                                 currentTime: getCurrentTimestamp,
                                 minTime: getCurrentTimestamp,
                               );
                             },
-                            text: 'Event Date',
+                            text: eventDateText,
                             options: FFButtonOptions(
                               width: 130,
                               height: 40,
@@ -237,11 +246,12 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                                 showTitleActions: true,
                                 onConfirm: (date) {
                                   setState(() => datePicked2 = date);
+                                  startTimeText = date.hour.toString() + ":" + date.minute.toString();  
                                 },
                                 currentTime: getCurrentTimestamp,
                               );
                             },
-                            text: 'Start Time',
+                            text: startTimeText,
                             options: FFButtonOptions(
                               width: 130,
                               height: 40,
@@ -274,11 +284,12 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                                 showTitleActions: true,
                                 onConfirm: (date) {
                                   setState(() => datePicked3 = date);
+                                  endTimeText = date.hour.toString() + ":" + date.minute.toString();
                                 },
                                 currentTime: getCurrentTimestamp,
                               );
                             },
-                            text: 'End Time',
+                            text: endTimeText,
                             options: FFButtonOptions(
                               width: 130,
                               height: 40,
@@ -314,16 +325,21 @@ class _CreateEventWidgetState extends State<CreateEventWidget> {
                         return;
                       }
 
+                      datePicked2 = DateTime(datePicked1!.year, datePicked1!.month, datePicked1!.day, datePicked2!.hour, datePicked2!.minute, 0);
+                      datePicked3 = DateTime(datePicked1!.year, datePicked1!.month, datePicked1!.day, datePicked3!.hour, datePicked3!.minute, 0);
+
                       final eventsCreateData = createEventsRecordData(
                         eventTitle: eventNameFieldController!.text,
                         eventSummary: shortBioFieldController!.text,
                         createdTime: getCurrentTimestamp,
                         displayName: eventNameFieldController!.text,
                         startTime: datePicked2,
-                        endTime: datePicked2,
+                        endTime: datePicked3,
                         eventDate: datePicked1,
+                        uid: getRandomString(28)
                       );
                       await EventsRecord.collection.doc().set(eventsCreateData);
+                      context.pushNamed('home');
                     },
                     text: 'Create Event',
                     options: FFButtonOptions(

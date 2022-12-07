@@ -1,12 +1,10 @@
+
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
-import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SignUpWidget extends StatefulWidget {
   const SignUpWidget({Key? key}) : super(key: key);
@@ -34,7 +32,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
     emailTextController = TextEditingController();
     passwordTextController = TextEditingController();
     passwordVisibility1 = false;
-    textController2 = TextEditingController(text: '(Admin Password)');
+    textController2 = TextEditingController();
   }
 
   @override
@@ -363,9 +361,10 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                       child: TextFormField(
                         controller: textController2,
                         autofocus: true,
-                        obscureText: false,
+                        obscureText: true,
                         decoration: InputDecoration(
                           labelText: 'Not Required',
+                          hintText: 'Admin Password',
                           hintStyle: FlutterFlowTheme.of(context).bodyText2,
                           enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
@@ -448,12 +447,23 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                             .update(usersCreateData);
 
                         if (textController2!.text == 'DanceMarathonExec2022') {
+                          final User = await signInWithEmail(
+                          context,
+                          emailTextController!.text,
+                          passwordTextController!.text,
+                          );
+
+                          context.goNamedAuth('Home', mounted);
                           return;
                         }
-
-                        return;
+                        final User = await signInWithEmail(
+                          context,
+                          emailTextController!.text,
+                          passwordTextController!.text,
+                          );
 
                         context.goNamedAuth('Home', mounted);
+                        return;
                       },
                       text: 'Sign up',
                       options: FFButtonOptions(
@@ -477,62 +487,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                     ),
                   ],
                 ),
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
-                    child: FlutterFlowIconButton(
-                      borderColor: Colors.transparent,
-                      borderRadius: 30,
-                      borderWidth: 1,
-                      buttonSize: 50,
-                      fillColor:
-                          FlutterFlowTheme.of(context).secondaryBackground,
-                      icon: FaIcon(
-                        FontAwesomeIcons.google,
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        size: 24,
-                      ),
-                      onPressed: () async {
-                        GoRouter.of(context).prepareAuthEvent();
-                        final user = await signInWithGoogle(context);
-                        if (user == null) {
-                          return;
-                        }
-
-                        context.goNamedAuth('Home', mounted);
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(8, 8, 8, 8),
-                    child: FlutterFlowIconButton(
-                      borderColor: Colors.transparent,
-                      borderRadius: 30,
-                      borderWidth: 1,
-                      buttonSize: 50,
-                      fillColor:
-                          FlutterFlowTheme.of(context).secondaryBackground,
-                      icon: FaIcon(
-                        FontAwesomeIcons.apple,
-                        color: FlutterFlowTheme.of(context).primaryText,
-                        size: 24,
-                      ),
-                      onPressed: () async {
-                        GoRouter.of(context).prepareAuthEvent();
-                        final user = await signInWithApple(context);
-                        if (user == null) {
-                          return;
-                        }
-
-                        context.goNamedAuth('Home', mounted);
-                      },
-                    ),
-                  ),
-                ],
               ),
             ],
           ),

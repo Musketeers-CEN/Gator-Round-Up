@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'index.dart';
 import 'serializers.dart';
 import 'package:built_value/built_value.dart';
 
@@ -97,7 +96,7 @@ Map<String, dynamic> createEventsRecordData({
     EventsRecord(
       (e) => e
         ..eventTitle = eventTitle
-        ..users = null
+        ..users = ListBuilder()
         ..eventSummary = eventSummary
         ..email = email
         ..displayName = displayName
